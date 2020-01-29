@@ -2,7 +2,13 @@ import json
 import random
 
 
-def main():
+animal_pronouciations = {
+    '🐷': ['zhū', 'zhú', 'zhǔ', 'zhù'],
+    '🐀': ['shū', 'shú', 'shǔ', 'shù'],
+}
+
+
+def generate(animal):
     with open('idiom.json', encoding='utf-8') as f:
         idioms = json.load(f)
 
@@ -13,22 +19,22 @@ def main():
             pinyin = idiom['pinyin'].split()
             indices = []
             for i, e in enumerate(pinyin):
-                if e in ['zhū', 'zhú', 'zhǔ', 'zhù']:
+                if e in animal_pronouciations[animal]:
                     indices.append(i)
             if indices:
                 chars = list(word)
                 for index in indices:
-                    chars[index] = '🐷'
+                    chars[index] = animal
                 word = ''.join(chars)
                 collected.append(word)
 
     random.shuffle(collected)
 
     with open("README.md", 'w', encoding='utf-8') as f:
-        header = "# 🐷年快乐！！！ \n## "
-        content = '祝大家🐷年：' + '，'.join(collected) + '！' * 20
+        header = f"# {animal}年快乐！！！ \n## "
+        content = f'祝大家{animal}年：' + '，'.join(collected) + '！' * 20
         f.write(header + content)
 
 
 if __name__ == '__main__':
-    main()
+    generate('🐀')
